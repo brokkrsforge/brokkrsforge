@@ -5,29 +5,134 @@ body{
 }
 
 #options{
-  background:white;
-  position:fixed;
-  left:0;
-  width:30%;
-  height:100%
+  background: white;
+  position: absolute;
+  left: 0;
+  width: 30%;
+  /* left: -25%; */
+  padding-right: 20px;
+  height: 100%;
+  max-width: 320px;
+  transition: .4s ease;
 }
+.optionsHide{
+  left: -25% !important;
+}
+
+.nipple {
+  position: absolute;
+  right: -25px;
+  top: calc(50% - 30px);
+  height: 30px;
+  width: 25px;
+  border-top: 30px solid transparent;
+  border-left: 25px solid white;
+  border-bottom: 30px solid transparent;
+  box-sizing: border-box;
+}
+
+
+.diamond {
+  position: absolute;
+  top: calc(50% - 12.5px);
+  z-index: 10;
+  background: #980011;
+  width: 25px;
+  height: 25px;
+  transform: rotate(45deg) skew(5deg, 5deg);
+  right: -12.5px;
+}
+
+#gear{
+  position: absolute;
+  left: -40px;
+  top: calc(50% - 15px);
+  z-index: 20;
+  fill: white;
+  padding: 5px;
+}
+
+.formItem label{
+  font-size: 14px;
+  display: block;
+  font-weight: bold;
+}
+
+input, select, textarea {
+    margin: 5px;
+    border: 2px solid transparent;
+    border-left: 2px solid #980011;
+    /*background: #9800110a;*/
+    box-sizing: border-box;
+    transition: .3s ease;
+    box-shadow: 0 0 2px grey;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 1px solid #980011;
+    background: white;
+    border: 2px solid #980011;
+}
+
+.buttonItem {
+    max-width: 100%;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.button {
+    display: block;
+    height: 35px;
+    border-radius: 5px;
+    float: left;
+    width: 27%;
+    margin: calc(8% / 3);
+    box-sizing: border-box;
+    background: white;
+    transition: .3s ease;
+    font-size: 18px;
+    border: 1px solid #980011;
+    color: #980011;
+}
+
+.button:hover {
+    background: #980011;
+    color: white;
+}
+
+
+
+
+
+
+
 #display{
   background: #dadada;
-  position:fixed;
-  left:30%;
-  width:40%;
-  height:100%
+  position: absolute;
+  /* left: 30%; */
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  min-width: 240px;
+  /* float: left; */
 }
 #card{
   background:blue;
   background: #454545;
-  margin:50px auto;
+  /*margin:50px auto;*/
   border-radius:10px;
-  padding:7.5px;
+  padding: 5px 7.5px;
   position:relative;
   box-sizing:border-box;
   width:2.5in;
   height:3.5in;
+  transition: .5s ease;
+    transform: scale(1.5);
+    top: calc(50% - (336px / 2));
+    left: calc(50% - 2.5in / 2);
 }
 #icon{
   width:20px;
@@ -56,6 +161,8 @@ body{
   border:none;
   color:white;
   min-height: 18.4px;
+  padding: 2.5px 2px;
+  padding-top: 0;
 }
 #typeSlotAttune, #rarityValue{
   font-size:14px;
@@ -116,6 +223,7 @@ body{
   height:20px;
   position:absolute;
   right:5px;
+  top: 5px;
   fill: white;
 }
 
@@ -125,7 +233,7 @@ body{
   padding:5px;
   padding-top:0px;
   border-radius:5px;
-  height: 280px;
+  height: 285px;
 }
 .cardContent{
   margin:0;
@@ -137,6 +245,8 @@ body{
   border:none;
   color:white;
   min-height: 18.4px;
+  padding: 2.5px 2px;
+  padding-top: 0;
 }
 .typeSlotAttune, .rarityValue{
   font-size:14px;
@@ -187,41 +297,16 @@ body{
 
 
 
-
-
-
-
-
-.button{
-  margin: 15px auto;
-  display: block;
-  width: 100px;
-  height: 35px;
-  box-shadow: 0px 0px 5px 0 black;
-  text-shadow: 0px 0px 2px black;
-  border-radius: 5px;
-  border: 1px solid white;
-  color: white;
+#itemAttunement{
+    vertical-align: middle; 
 }
 
-#addCard{
-  background: green;
-}
-
-#printCards{
-  background: #00abff;
-  position:absolute;
-  left:calc(50% - 50px);
-  bottom:40px;
-}
 
 .formItem{
   max-width: 100%;
   margin: 10px;
 }
-label{
-  font-size: 14px;
-}
+
 #color, #titleColor{
   border: none;
   background: white;
@@ -231,22 +316,38 @@ label{
 }
 
 #deckWindow{
-  width:30%;
-  right:0;
-  height:100%;
-  background:white;
-  position: fixed;
+  /* width: 30%; */
+  min-width: 250px;
+  right: 0;
+  height: 100%;
+  background: white;
+  position: absolute;
+  max-width: 320px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 #searchBar{
-  width:100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  height: 4vh;
 }
 
+.cardPane {
+    overflow-y: auto;
+    max-height: 92vh;
+    position: absolute;
+    top: 4vh;
+    width: 100%;
+    /* height: 5vh; */
+    padding: 2px;
+}
 
 #cardList{
   list-style: none;
   padding: 0;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .cardItem{
@@ -279,6 +380,13 @@ li+li{
 
 #addCardButton{
   width: 100%;
+  position: absolute;
+  bottom: 0;
+  height: 4vh;
+  background: #980011;
+  color: white;
+  box-sizing: border-box;
+  border: 2px solid white;
 }
 
 #cardIcon{

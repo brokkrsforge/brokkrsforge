@@ -315,6 +315,9 @@ let cardEnabled = function(){
   $(`#card${enabledCard}`).addClass('cardEnabled');
 }
 
+let hideOptions = function(){
+  $('#options').toggleClass('optionsHide');
+}
 
 //******TO DO:******//
 
@@ -341,6 +344,13 @@ let cardEnabled = function(){
   //Add some sort of saving functionality
     //save to browser/cookies vs account based
   //Pretty up UI
+    //hover effects
+    //reposition buttons
+    //overflow for card list
+    //search bar
+  //Add mobile functionality
+  //include bonus features for patreon supporters
+  //Update cards on save button press vs on input update/change of focus
   //Clean up code
   //add patreon link
 
