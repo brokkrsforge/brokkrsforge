@@ -13,6 +13,7 @@
 /-->
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 
 <body>
@@ -248,11 +249,15 @@
 </div>
 
 <div id="deckWindow">
-	<input type="search" name="searchBar" id="searchBar">
+	<input type="search" name="searchBar" id="searchBar" placeholder="&#xF002; Search">
 	<div class="cardPane">
-		<ul id="cardList">
-			
-		</ul>
+    <h1 class="libDeckTitle">Library</h1>
+    <p class="numCardCount">1/1</p>
+		<ul class= 'cardList' id="cardList"></ul>
+
+    <h1 class="libDeckTitle">Deck</h1>
+    <p class="numCardCount">0/0</p>
+    <ul class= 'cardList' id='deckList'></ul>
 	</div>
 	<input type="button" id='addCardButton' value="Add New Card" onclick="addNewCard();"/>
 </div>
@@ -262,6 +267,8 @@
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
   <!--<script src="js/plugins/svg-morpheus.js"></script>/-->
   <script src="js/main.js"></script>
+
+
 
     <!--<script src="js/svg4everybody.js"></script>
     <script>svg4everybody();</script>/-->

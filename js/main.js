@@ -1,6 +1,6 @@
 $("#itemType, #itemAttunement, #itemRarity").prop("selectedIndex", -1);
 
-let itemName ="Name", itemType ="Type", itemSlot ="Slot", itemAttunement ="(Requires attunement)", itemRarity ="Rarity", itemValue ="Value", itemDescription ="Description";
+let itemName ="Name", itemType ="Type", itemSlot ="Slot", itemAttunement ="(requires attunement)", itemRarity ="Rarity", itemValue ="Value", itemDescription ="Description";
 
   $('#color').val('#454545');
   $('#titleColor').val('#FFFFFF');
@@ -59,7 +59,10 @@ $('#itemDescription').on('input', function() {
     fontAdjust(itemDescription.length);
     $('#description').text(itemDescription);
 });
-  
+
+
+//Adjusts font size to fit description area
+  //needs tweaking/reworking
 let fontAdjust = function(length){
   if (length>990){
     $('#description').css('font-size','8px');
@@ -78,7 +81,7 @@ let fontAdjust = function(length){
   }
 }
 
-//TASK: Switch all variables over to properties of a class instead, which will allow for better indexing and sorting later when a multi-card system is implemented.
+
 class Card {
   constructor(name, type, attunement, rarity, value, description, backColor, titleColor) {
     this._name = name;
@@ -92,21 +95,24 @@ class Card {
   }
 }
 
-//when add card is clicked, create new card and add it to array
-//let card0 = new Card('Bag of Moulding'); //TASK: edit to pull all values from current inputs
+//First card is initialized. An array is created to handle the deck. The first card is added to the deck
 let card0 = new Card('Item Name', "", true, "", "", "", '#454545', '#FFFFFF');
 let cardList=[];
+let cardCount;
 cardList.push(card0);
 $('#cardList').append(`<li class='cardItem' id='card0'><span>${card0._name}</span><svg class='cardListIcon' onclick="deckDelete($(this).parent()[0].id);"><use xlink:href=""></use></svg></li>`)
-//<object type="image/svg+xml" data="" class='cardListIcon'></object>
-//<svg class='cardIcon'><use xlink:href="#icon${cardList[i]._type}"></use></svg>
+//TASK:
+//create function that pushes new cards to the proper array and updates UI accordingly
+  //cardCount
+  //Position in Library or Deck
 
+//sets the active card for the UI to interact with
 let activeCard=cardList[0];
 
-//
-//Add function clearCard to clear all inputs and card fields
-//
+
+//Clears all inputs and card fields
 let clearCard = function(currentCard){
+  //Updates form fields to reflect data from the active card(activeCard)
   $("#itemName").val(currentCard._name);
   $('#itemType').val(currentCard._type);
   $("#itemAttunement").prop( "checked", currentCard._attunement ); 
@@ -116,7 +122,7 @@ let clearCard = function(currentCard){
   $('#color').val(currentCard._backColor);
   $('#titleColor').val(currentCard._titleColor);
 
-
+//Updates variables to match values of the active card
 itemName = $("#itemName").val();  
 itemType = $("#itemType option:selected").text();
 itemAttunement = ($("#itemAttunement").is(":checked")) ? '(Requires attunement)' : '';
@@ -125,7 +131,7 @@ itemValue = $("#itemValue").val();
 itemDescription = $('#itemDescription').val();
 
 
-
+//Updates card UI to reflect data of the active card(activeCard)
   $('#title').text(itemName);
   $('#typeSlotAttune').text(itemType+' '+itemAttunement);    
     switch(itemType){
@@ -155,11 +161,9 @@ itemDescription = $('#itemDescription').val();
       //$('.cardIcon').attr('data',`images/icons/SVG/${itemType}.svg`);
       $('#card use').attr('xlink:href', `#icon${itemType}`);
     }
-    
-
 }
 
-
+//Saves the new user data for the activeCard and overwrites the values saved to that card in the array
 let saveCard = function(currentCard){
   currentCard._name=$("#itemName").val();
   currentCard._type=$("#itemType option:selected").val(); 
@@ -169,6 +173,7 @@ let saveCard = function(currentCard){
   currentCard._description=$('#itemDescription').val(); 
   currentCard._backColor=$('#color').val();
   currentCard._titleColor=$('#titleColor').val();
+  //Updates UI of card in the deck UI to reflect new user data
   $(`#card${cardList.indexOf(activeCard)} span`).text(currentCard._name);
   $(`#card${cardList.indexOf(activeCard)}`).css('background', currentCard._backColor);
   $(`#card${cardList.indexOf(activeCard)}`).css('color', currentCard._titleColor);
@@ -176,25 +181,47 @@ let saveCard = function(currentCard){
 
   }
   else{
-    //$(`#card${cardList.indexOf(activeCard)} object`).attr('data', `images/icons/SVG/${currentCard._type}.svg`);
     $(`#card${cardList.indexOf(activeCard)} use`).attr('xlink:href', `#icon${currentCard._type}`);
   }
-  
 }
-
+//Adds a new card to the array(cardList[]). Adds the html elements for new card to the deck UI
 let addNewCard = function(){
   let cardNum=cardList.length;
   let cardID = 'card'+cardNum;
   cardList.push();
   cardList[cardNum]=new Card('New Item', "", false, "", "", "", '#454545', '#FFFFFF');
   cardList[cardNum]._name='New Item';
-  $('#cardList').append(`<li class='cardItem' id='${cardID}'><span>${cardList[cardNum]._name}</span><svg class='cardListIcon' onclick="event.stopPropagation();deckDelete($(this).parent()[0].id);"><use xlink:href="#icon${cardList[cardNum]._type}"></use></svg></li>`)//images/icons/SVG/${cardList[cardNum]._type}.svg
-  //<object type="image/svg+xml" data="" class='cardListIcon'></object>
-//<svg class='cardIcon'><use xlink:href="#icon${cardList[i]._type}"></use></svg>
+  $('#cardList').append(`<li class='cardItem' id='${cardID}'><div class="InsertButtonName"></div><span>${cardList[cardNum]._name}</span><svg class='cardListIcon' onclick="event.stopPropagation();deckDelete($(this).parent()[0].id);"><use xlink:href="#icon${cardList[cardNum]._type}"></use></svg></li>`)//images/icons/SVG/${cardList[cardNum]._type}.svg
 
+  //changes the active card to the newly created card
   activeCard=cardList[cardNum];
+  //Updates UI to match the new card
   clearCard(activeCard);
 }
+
+//create deck array and change cardList to library
+let library = [];
+//add card to deck from library
+$("#cardList").on("click", '.InsertButtonName', function(){
+  let ID = this.parentElement.id;
+  let IDNum = ID.slice(4);
+  let cardNum=library.length;
+  let cardID = 'card'+cardNum;
+  library.push(cardList[IDNum]);
+
+  $('#deckList').append(`<li class='cardItem' id='${cardID}'><div class="InsertButtonName"></div><span>${library[cardNum]._name}</span><svg class='cardListIcon' onclick="event.stopPropagation();deckDelete($(this).parent()[0].id);"><use xlink:href="#icon${library[cardNum]._type}"></use></svg></li>`)
+    //need to add code similar to the below on-click function to update UI
+    //need to add separate delete button from library cards
+    //need to change library to 'deck' and cardList to 'library'
+    //need to add a new id system for the cards in library so they do not conflict with the original deck.
+
+    //
+  //$(`#card${cardList.indexOf(activeCard)}`).css('background', currentCard._backColor);
+  //$(`#card${cardList.indexOf(activeCard)}`).css('color', currentCard._titleColor);
+
+});
+
+//changes the active card(activeCard) to the card that is clicked
 $("#cardList").on("click", '.cardItem', function(){
   let ID = this.id;
   let IDNum = ID.slice(4);
@@ -203,8 +230,17 @@ $("#cardList").on("click", '.cardItem', function(){
   cardEnabled();
 });
 
+$("#deckList").on("click", '.cardItem', function(){
+  let ID = this.id;
+  let IDNum = ID.slice(4);
+  activeCard=library[IDNum];
+  clearCard(activeCard);
+  cardEnabled();
+
+});
 
 
+//Prints all cards
 let printCards = function(){
   for (let i=0; i<cardList.length;i++){
     let rarityValue;
@@ -242,8 +278,8 @@ let printCards = function(){
   
 }
 
-//DELETE CARDS://
-
+//Deletes cards
+//can probably just add a second perameter to make this work for both the cardList and library arrays
 let deckDelete = function(cardIndex){
   let activeIndex = cardList.indexOf(activeCard);
   cardIndex=cardIndex.substring(4);
@@ -290,9 +326,7 @@ let detailsDelete = function(){
 }
 
 
-//DUPLICATE CARD://
-
-
+//Duplicates card
 let dupeCard = function(){
   let originalCard=activeCard;
   let originalIndex = cardList.indexOf(originalCard);
@@ -305,16 +339,16 @@ let dupeCard = function(){
   $('#cardList').append(`<li class='cardItem' id='card${cardList.length-1}'><span>${cardList[cardList.length-1]._name}</span><svg class='cardListIcon' onclick="event.stopPropagation();deckDelete($(this).parent()[0].id);"><use xlink:href="#icon${cardList[cardList.length-1]._type}"></use></svg></li>`)//images/icons/SVG/${cardList[cardNum]._type}.svg
   $(`#card${cardList.length-1}`).css('background', cardList[cardList.length-1]._backColor);
   $(`#card${cardList.length-1}`).css('color', cardList[cardList.length-1]._titleColor);
-
 }
 
-
+//adds focus to the UI of the active card in the card list 
 let cardEnabled = function(){
   let enabledCard = cardList.indexOf(activeCard);
   $('.cardItem').removeClass('cardEnabled');
   $(`#card${enabledCard}`).addClass('cardEnabled');
 }
 
+//hides the options pane
 let hideOptions = function(){
   $('#options').toggleClass('optionsHide');
 }
