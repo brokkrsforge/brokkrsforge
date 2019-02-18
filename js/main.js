@@ -2,22 +2,18 @@ $("#itemType, #itemAttunement, #itemRarity").prop("selectedIndex", -1);
 
 let itemName ="Name", itemType ="Type", itemSlot ="Slot", itemAttunement ="(requires attunement)", itemRarity ="Rarity", itemValue ="Value", itemDescription ="Description";
 
-  $('#color').val('#454545');
-  $('#titleColor').val('#FFFFFF');
-
+$('#color').val('#454545');
+$('#titleColor').val('#FFFFFF');
 $('#color').on('input', function() {    
   $('#card').css('background', $('#color').val());
 });
-
 $('#titleColor').on('input', function() {    
   $('#title').css('color', $('#titleColor').val());
 });
-
 $('#itemName').on('input', function() {
   itemName = $("#itemName").val();    
   $('#title').text(itemName);
 });
-
 $('#itemType').on('input', function() {
   itemType = $("#itemType option:selected").text();  
   $('#typeSlotAttune').text(itemType+' '+itemAttunement);
@@ -26,14 +22,11 @@ $('#itemType').on('input', function() {
   else{$('#card use').attr('xlink:href', `#icon${itemType}`);} //swaps icon for each item type
 
   //$(`#card${cardList.indexOf(activeCard)} use`).attr('xlink:href', `#icon${currentCard._type}`);
-
 });
-
 $('#itemAttunement').on('input', function() {
   itemAttunement = ($("#itemAttunement").is(":checked")) ? '(Requires attunement)' : '';
   $('#typeSlotAttune').text(itemType+' '+itemAttunement);
 });
-
 $('#itemRarity').on('input', function() {
   itemRarity = $("#itemRarity option:selected").text();    
   if (itemValue==''){
@@ -43,7 +36,6 @@ $('#itemRarity').on('input', function() {
    $('#rarityValue').text(itemRarity+', '+itemValue);
   }
 });
-
 $('#itemValue').on('input', function() {
   itemValue = $("#itemValue").val();
   if (itemValue==''){
@@ -53,13 +45,11 @@ $('#itemValue').on('input', function() {
    $('#rarityValue').text(itemRarity+', '+itemValue);
   }
 });
-
 $('#itemDescription').on('input', function() {
     var itemDescription = $('#itemDescription').val();  
     fontAdjust(itemDescription.length);
     $('#description').text(itemDescription);
 });
-
 
 //Adjusts font size to fit description area
   //needs tweaking/reworking
@@ -122,16 +112,16 @@ let clearCard = function(currentCard){
   $('#color').val(currentCard._backColor);
   $('#titleColor').val(currentCard._titleColor);
 
-//Updates variables to match values of the active card
-itemName = $("#itemName").val();  
-itemType = $("#itemType option:selected").text();
-itemAttunement = ($("#itemAttunement").is(":checked")) ? '(Requires attunement)' : '';
-itemRarity = $("#itemRarity option:selected").text();   
-itemValue = $("#itemValue").val();
-itemDescription = $('#itemDescription').val();
+  //Updates variables to match values of the active card
+  itemName = $("#itemName").val();  
+  itemType = $("#itemType option:selected").text();
+  itemAttunement = ($("#itemAttunement").is(":checked")) ? '(Requires attunement)' : '';
+  itemRarity = $("#itemRarity option:selected").text();   
+  itemValue = $("#itemValue").val();
+  itemDescription = $('#itemDescription').val();
 
 
-//Updates card UI to reflect data of the active card(activeCard)
+  //Updates card UI to reflect data of the active card(activeCard)
   $('#title').text(itemName);
   $('#typeSlotAttune').text(itemType+' '+itemAttunement);    
     switch(itemType){
@@ -161,7 +151,7 @@ itemDescription = $('#itemDescription').val();
       //$('.cardIcon').attr('data',`images/icons/SVG/${itemType}.svg`);
       $('#card use').attr('xlink:href', `#icon${itemType}`);
     }
-}
+}//End of clearCard
 
 //Saves the new user data for the activeCard and overwrites the values saved to that card in the array
 let saveCard = function(currentCard){
@@ -183,7 +173,10 @@ let saveCard = function(currentCard){
   else{
     $(`#card${cardList.indexOf(activeCard)} use`).attr('xlink:href', `#icon${currentCard._type}`);
   }
-}
+}//End of saveCard
+  //change save from button press to keypress/input
+
+
 //Adds a new card to the array(cardList[]). Adds the html elements for new card to the deck UI
 let addNewCard = function(){
   let cardNum=cardList.length;
@@ -191,7 +184,17 @@ let addNewCard = function(){
   cardList.push();
   cardList[cardNum]=new Card('New Item', "", false, "", "", "", '#454545', '#FFFFFF');
   cardList[cardNum]._name='New Item';
-  $('#cardList').append(`<li class='cardItem' id='${cardID}'><div class="InsertButtonName"></div><span>${cardList[cardNum]._name}</span><svg class='cardListIcon' onclick="event.stopPropagation();deckDelete($(this).parent()[0].id);"><use xlink:href="#icon${cardList[cardNum]._type}"></use></svg></li>`)//images/icons/SVG/${cardList[cardNum]._type}.svg
+
+  var $cardItem = $(`<li id='${cardID}'><div class="InsertButtonName"></div><span>${cardList[cardNum]._name}</span><svg class='cardListIcon' onclick="event.stopPropagation();deckDelete($(this).parent()[0].id, cardList);"><use xlink:href="#icon${cardList[cardNum]._type}"></use></svg></li>`)
+    .addClass('cardItem')
+    .appendTo('#cardList');
+  $cardItem.css('opacity');
+  $cardItem.addClass('in');
+  //$("#cardList").scrollTop($("#cardList")[0].scrollIntoView);
+  //$("#cardList").scrollTop($("#cardList")[0].scrollHeight);
+  $("#cardList").animate({scrollTop:$("#cardList")[0].scrollHeight}, 1000)
+
+  //$('#cardList').append(`<li class='cardItem' id='${cardID}'><div class="InsertButtonName"></div><span>${cardList[cardNum]._name}</span><svg class='cardListIcon' onclick="event.stopPropagation();deckDelete($(this).parent()[0].id, cardList);"><use xlink:href="#icon${cardList[cardNum]._type}"></use></svg></li>`)//images/icons/SVG/${cardList[cardNum]._type}.svg
 
   //changes the active card to the newly created card
   activeCard=cardList[cardNum];
@@ -209,13 +212,12 @@ $("#cardList").on("click", '.InsertButtonName', function(){
   let cardID = 'card'+cardNum;
   library.push(cardList[IDNum]);
 
-  $('#deckList').append(`<li class='cardItem' id='${cardID}'><div class="InsertButtonName"></div><span>${library[cardNum]._name}</span><svg class='cardListIcon' onclick="event.stopPropagation();deckDelete($(this).parent()[0].id);"><use xlink:href="#icon${library[cardNum]._type}"></use></svg></li>`)
+  $('#deckList').append(`<li class='cardItem' id='${cardID}'><div class="InsertButtonName"></div><span>${library[cardNum]._name}</span><svg class='cardListIcon' onclick="event.stopPropagation();deckDelete($(this).parent()[0].id, library);"><use xlink:href="#icon${library[cardNum]._type}"></use></svg></li>`)
     //need to add code similar to the below on-click function to update UI
     //need to add separate delete button from library cards
     //need to change library to 'deck' and cardList to 'library'
     //need to add a new id system for the cards in library so they do not conflict with the original deck.
 
-    //
   //$(`#card${cardList.indexOf(activeCard)}`).css('background', currentCard._backColor);
   //$(`#card${cardList.indexOf(activeCard)}`).css('color', currentCard._titleColor);
 
@@ -280,27 +282,27 @@ let printCards = function(){
 
 //Deletes cards
 //can probably just add a second perameter to make this work for both the cardList and library arrays
-let deckDelete = function(cardIndex){
-  let activeIndex = cardList.indexOf(activeCard);
+let deckDelete = function(cardIndex, libraryType){ //libraryType equal to either 'cardList' or 'library'
+  let activeIndex = libraryType.indexOf(activeCard);
   cardIndex=cardIndex.substring(4);
 
-  cardList.splice(cardIndex,1);
+  libraryType.splice(cardIndex,1);
   if (cardIndex==activeIndex){
     if (cardIndex!=0){
-      activeCard=cardList[cardIndex-1];
+      activeCard=libraryType[cardIndex-1];
       clearCard(activeCard);
     }
     else{
-      activeCard=cardList[cardIndex];
+      activeCard=libraryType[cardIndex];
       clearCard(activeCard);
     }
   }
   
   $(`#card${cardIndex}`).remove();
-  for(let i=cardIndex;i<cardList.length+1;i++){
+  for(let i=cardIndex;i<libraryType.length+1;i++){
     $(`#card${i}`).attr("id",`card${i-1}`);
   }
-  if(cardList.length==0){
+  if(libraryType.length==0){
     //hide card
   }
 }
@@ -387,5 +389,7 @@ let hideOptions = function(){
   //Update cards on save button press vs on input update/change of focus
   //Clean up code
   //add patreon link
+
+  //Center card groups on print page so card backings can line up with the fronts
 
   //Build Overall site

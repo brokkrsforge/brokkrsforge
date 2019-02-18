@@ -2,6 +2,7 @@ body{
   padding:0;
   margin:0;
   font-family:'Garamond';
+  --primaryColor:#980011;
 }
 
 #options{
@@ -376,6 +377,10 @@ input:focus, select:focus, textarea:focus {
     list-style: none;
     padding: 0;
     margin: 0;
+    background: #ececec;
+    min-height: 29.4px;
+    height: calc(72.5vh / 2);
+    overflow-y:auto;
 }
 
 .cardItem{
@@ -386,10 +391,14 @@ input:focus, select:focus, textarea:focus {
   min-height: 18.4px;
   transition: .2s;
   text-align: left;
+  opacity:0;
 }
 .cardItem:hover{
   filter: opacity(.85);
   border-left: 3px solid #00a4ff;
+}
+.in{
+  opacity:1;
 }
 
 .InsertButtonName {
@@ -423,11 +432,16 @@ li+li{
   position: absolute;
   bottom: 0;
   height: 4vh;
+  height: 5vh;
   background: #980011;
   color: white;
   box-sizing: border-box;
   border: 2px solid white;
   margin: 0;
+  box-shadow: none;
+  font-weight: 900;
+  font-size: 16px;
+  font-family: "Font Awesome 5 Free", Garamond;
 }
 
 #cardIcon{
